@@ -5,6 +5,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Bio } from '../../data/constants';
+import toast from 'react-hot-toast';
 
 const FooterContainer = styled.div`
   width: 100%;
@@ -86,6 +87,10 @@ const Copyright = styled.p`
 `;
 
 function Footer() {
+  const handleSocialClick = (platform) => {
+    toast.success(`Opening ${platform} in new tab...`);
+  };
+
   return (
     <FooterContainer>
       <FooterWrapper>
@@ -98,10 +103,10 @@ function Footer() {
           <NavLink href="#education">Education</NavLink>
         </Nav>
         <SocialMediaIcons>
-          <SocialMediaIcon href="https://x.com/harshavichal01" target="_blank" rel="noopener noreferrer"><TwitterIcon /></SocialMediaIcon>
-          <SocialMediaIcon href={Bio.linkedin} target="_blank" rel="noopener noreferrer"><LinkedInIcon /></SocialMediaIcon>
-          <SocialMediaIcon href="https://www.instagram.com/harsh.avichal/" target="_blank" rel="noopener noreferrer"><InstagramIcon /></SocialMediaIcon>
-          <SocialMediaIcon href="https://github.com/harshavichal" target="_blank" rel="noopener noreferrer"><GitHubIcon /></SocialMediaIcon>
+          <SocialMediaIcon href="https://x.com/harshavichal01" target="_blank" rel="noopener noreferrer" onClick={() => handleSocialClick('Twitter')}><TwitterIcon /></SocialMediaIcon>
+          <SocialMediaIcon href={Bio.linkedin} target="_blank" rel="noopener noreferrer" onClick={() => handleSocialClick('LinkedIn')}><LinkedInIcon /></SocialMediaIcon>
+          <SocialMediaIcon href="https://www.instagram.com/harsh.avichal/" target="_blank" rel="noopener noreferrer" onClick={() => handleSocialClick('Instagram')}><InstagramIcon /></SocialMediaIcon>
+          <SocialMediaIcon href="https://github.com/harshavichal" target="_blank" rel="noopener noreferrer" onClick={() => handleSocialClick('GitHub')}><GitHubIcon /></SocialMediaIcon>
         </SocialMediaIcons>
         <Copyright>
           &copy; 2025 Harsh Avichal. All rights reserved.

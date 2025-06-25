@@ -7,10 +7,22 @@ import { useTheme } from 'styled-components';
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const theme = useTheme();
+
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    const heroSection = document.getElementById('about');
+    if (heroSection) {
+      heroSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <Nav>
       <NavbarContainer>
-        <NavLogo to='/'>
+        <NavLogo to='/' onClick={handleLogoClick}>
           <span style={{ color: theme.primary, fontWeight: 700, fontSize: 28, marginRight: 4, lineHeight: '1' }}>{'<'}</span>
           <span style={{ color: 'white', fontWeight: 700, fontSize: 20, lineHeight: '1', fontFamily: 'Poppins, Inter, Segoe UI, Arial, sans-serif' }}>Harsh</span>
           <span style={{ color: theme.primary, fontWeight: 700, fontSize: 28, margin: '0 4px', lineHeight: '1.1' }}>/</span>
@@ -32,8 +44,8 @@ const Navbar = () => {
         <ButtonContainer>
           <GitHubButton href={Bio.github} target="_blank">Github Profile</GitHubButton>
         </ButtonContainer>
-        {
-          isOpen &&
+        
+        {isOpen &&
           <MobileMenu isOpen={isOpen}>
             <MobileLink href="#about" onClick={() => {
               setIsOpen(!isOpen)

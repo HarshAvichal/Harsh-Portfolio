@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRef } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast from 'react-hot-toast';
 
 const Container = styled.div`
 display: flex;
@@ -138,17 +137,48 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
-      from_email: form.current.from_email.value,
-      from_name: form.current.from_name.value,
-      subject: form.current.subject.value,
-      message: form.current.message.value,
+      from_email: form.current.from_email.value.trim(),
+      from_name: form.current.from_name.value.trim(),
+      subject: form.current.subject.value.trim(),
+      message: form.current.message.value.trim(),
     };
 
     // Validation: check if any field is empty
     if (!data.from_email || !data.from_name || !data.subject || !data.message) {
-      toast.warn('Please fill in all the details first.');
+      if (!data.from_email) toast.error('Please enter your email address.');
+      else if (!data.from_name) toast.error('Please enter your name.');
+      else if (!data.subject) toast.error('Please enter a subject.');
+      else if (!data.message) toast.error('Please enter your message.');
       return;
     }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.from_email)) {
+      toast.error('Please enter a valid email address.');
+      return;
+    }
+
+    // Name validation (at least 2 characters)
+    if (data.from_name.length < 2) {
+      toast.error('Please enter a valid name (at least 2 characters).');
+      return;
+    }
+
+    // Subject validation (at least 3 characters)
+    if (data.subject.length < 3) {
+      toast.error('Please enter a subject (at least 3 characters).');
+      return;
+    }
+
+    // Message validation (at least 10 characters)
+    if (data.message.length < 10) {
+      toast.error('Please enter a message (at least 10 characters).');
+      return;
+    }
+
+    // Show loading toast
+    const loadingToast = toast.loading('Sending your message...');
 
     fetch('https://harsh-portfolio-bh2y.onrender.com/send', {
       method: 'POST',
@@ -156,16 +186,21 @@ const Contact = () => {
       body: JSON.stringify(data),
     })
       .then(async (response) => {
+        // Dismiss loading toast
+        toast.dismiss(loadingToast);
+        
         if (response.ok) {
-          toast.success('Email sent successfully!');
+          toast.success('Email sent successfully! I\'ll get back to you soon.');
           form.current.reset();
         } else {
           const result = await response.json();
-          toast.error(result.message || 'Failed to send email.');
+          toast.error(result.message || 'Failed to send email. Please try again.');
         }
       })
       .catch(() => {
-        toast.error('Failed to send email.');
+        // Dismiss loading toast
+        toast.dismiss(loadingToast);
+        toast.error('Failed to send email. Please check your connection and try again.');
       });
   }
 
@@ -182,7 +217,6 @@ const Contact = () => {
           <ContactInputMessage placeholder="Message" rows="4" name="message" />
           <ContactButton type="submit" value="Send" />
         </ContactForm>
-        <ToastContainer position="top-center" autoClose={4000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       </Wrapper>
     </Container>
   )

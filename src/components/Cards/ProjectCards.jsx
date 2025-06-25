@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import toast from 'react-hot-toast';
 
 
 const Button = styled.button`
@@ -123,8 +124,13 @@ const Avatar = styled.img`
 `
 
 const ProjectCards = ({project,setOpenModal}) => {
+    const handleCardClick = () => {
+        toast.success(`Opening ${project.title} details...`);
+        setOpenModal({state: true, project: project});
+    };
+
     return (
-        <Card onClick={() => setOpenModal({state: true, project: project})}>
+        <Card onClick={handleCardClick}>
             <Image src={project.image}/>
             <Tags>
                 {project.tags?.map((tag, index) => (
