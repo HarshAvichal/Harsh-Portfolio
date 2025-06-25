@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: 'https://harsh-portfolio-ashy.vercel.app/',
+  origin: 'https://harsh-portfolio-ashy.vercel.app',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
 }));
