@@ -150,7 +150,7 @@ const Contact = () => {
       return;
     }
 
-    fetch('http://localhost:4000/send', {
+    fetch('https://harsh-portfolio-bh2y.onrender.com/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
